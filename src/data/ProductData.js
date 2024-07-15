@@ -32,6 +32,16 @@ import product27 from "../img/product-27.webp";
 import product28 from "../img/product-28.webp";
 import product29 from "../img/product-29.webp";
 import product30 from "../img/product-30.webp";
+import product31 from "../img/product-31.webp";
+import product32 from "../img/product-32.webp";
+import product33 from "../img/product-33.webp";
+import product34 from "../img/product-34.webp";
+import product35 from "../img/product-35.webp";
+import product36 from "../img/product-36.webp";
+import product37 from "../img/product-37.webp";
+import product38 from "../img/product-38.webp";
+import product39 from "../img/product-39.webp";
+import product40 from "../img/product-40.webp";
 const productData = [
   {
     id: 1,
@@ -182,6 +192,56 @@ const productData = [
     id: 30,
     name: "Xiaomi Pad 6 6 GB RAM 128 GB ROM 11.0 inch with Wi-Fi Only Tablet (Graphite grey)",
     images: [product30],
+  },
+  {
+    id: 31,
+    name: "Duluck Smart Wireless Bluetooth Speaker BT with Alexa built-in. Connect to your phone & play your favorite songs. its 10-Watt speaker with a 10-watt subwoofer along with a spiral bass port produces rich sound, You can ask it to play New and Old songs for 80's, 70's 60's and more decade less, Voice controls IoT devices, Just ask it to tell you news, weather updates, time and other voice-controlled features, etc, model (WB-39) 10 W Bluetooth Speaker",
+    images: [product31],
+  },
+  {
+    id: 32,
+    name: "Antman Remote Control 360 Flip Stunt E88 Pro camera Drone: Soar, Snap, Share Drone Drone",
+    images: [product32],
+  },
+  {
+    id: 33,
+    name: "NISHIDHA K3&E99 4k Black HD foldable Quadcopter dual Camera HD 720p Live Video Recording Drone",
+    images: [product33],
+  },
+  {
+    id: 34,
+    name: "Haksmith E88 smart drone with 4k dual camera and dual battery Drone",
+    images: [product34],
+  },
+  {
+    id: 35,
+    name: "Drone Remote Control Quadcopter 360 Flip Stunt Drone",
+    images: [product35],
+  },
+  {
+    id: 36,
+    name: "LAVYA intel core i5 processor (16 GB RAM/2GB Graphics/500 GB Hard Disk/128 GB SSD Capacity/Windows 10 (64-bit)/2 GB Graphics Memory) Gaming Tower with MS Office",
+    images: [product36],
+  },
+  {
+    id: 37,
+    name: "iball WORKSTATION03 i5-2400 (8 GB RAM/Intel® HD Graphics 2000 Graphics/500 GB Hard Disk/128 GB SSD Capacity/Windows 10 (64-bit)/0.512 GB Graphics Memory) Mid Tower with MS Office",
+    images: [product37],
+  },
+  {
+    id: 38,
+    name: "Assembled 6th Generation Core i5 Processors,Cores 4 ,Threads. 4 Max Frequency. 3.60 GHz 6th Generation Core™ i5 Processors,Cores 4 ,Threads. 4 Max Frequency. 3.60 GHz (16 GB RAM/NVIDIA GeForce GT 730 Synergy Edition 4 GB DDR3 Graphics Card Graphics/1 TB Hard Disk/256 GB SSD Capacity/Windows 10 Pro (64-bit)/4 GB Graphics Memory) Gaming Tower",
+    images: [product38],
+  },
+  {
+    id: 39,
+    name: "Assembled 6th Generation Core i5 Processors,Cores 4 ,Threads. 4 Max Frequency. 3.60 GHz 6th Generation Core™ i5 Processors,Cores 4 ,Threads. 4 Max Frequency. 3.60 GHz (16 GB RAM/NVIDIA GeForce GT 730 Synergy Edition 4 GB DDR3 Graphics Card Graphics/1 TB Hard Disk/256 GB SSD Capacity/Windows 10 Pro (64-bit)/4 GB Graphics Memory) Gaming Tower",
+    images: [product39],
+  },
+  {
+    id: 40,
+    name: "Punta i3/500/4GB Budget CPU Core i3 (4 GB RAM/Intel Integrated Graphics/500 GB Hard Disk/64 GB SSD Capacity/Windows 10 Pro (64-bit)/1 GB Graphics Memory) Full Tower",
+    images: [product40],
   },
 ];
 

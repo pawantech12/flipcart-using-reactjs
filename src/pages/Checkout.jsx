@@ -14,6 +14,21 @@ import gpay from "../img/gpay.svg";
 import bhimupi from "../img/bhimupi.svg";
 import safetylabelbadge from "../img/safety-label-badge.jpg";
 import states from "../data/state";
+import logo from "../img/flipcart-logo.png";
+
+const loadScript = (src) => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+};
 
 export const Checkout = () => {
   const {
@@ -67,6 +82,61 @@ export const Checkout = () => {
     return `${minutes.toString().padStart(2, "0")} min ${remainingSeconds
       .toString()
       .padStart(2, "0")}sec`;
+  };
+
+  // payment integration
+  const handlePayment = async () => {
+    // Load Razorpay script
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    const response = await fetch("http://localhost:3000/payment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: 29900,
+        currency: "INR",
+      }),
+    });
+    const data = await response.json();
+    // const keyId = process.env.REACT_APP_RAZORPAY_KEY_ID;
+    const options = {
+      key: import.meta.env.VITE_APP_RAZORPAY_KEY_ID,
+      amount: data.amount,
+      currency: data.currency,
+      name: "Budget Store",
+      description: "Test payment",
+      image: logo,
+
+      order_id: data.id,
+      handler: function (response) {
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
+      },
+      prefill: {
+        name: "Budget Store",
+        email: "your.email@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "Your Address",
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
 
   return (
@@ -419,7 +489,7 @@ export const Checkout = () => {
             <div className="">
               <button
                 className="bg-[#fec200] h-full text-sm px-10 rounded-md"
-                onClick={nextStep}
+                onClick={handlePayment}
               >
                 Continue
               </button>
