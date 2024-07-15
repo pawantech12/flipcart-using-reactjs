@@ -96,16 +96,19 @@ export const Checkout = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/payment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        amount: 29900,
-        currency: "INR",
-      }),
-    });
+    const response = await fetch(
+      "https://flipcart-using-reactjs.onrender.com/payment",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: 29900,
+          currency: "INR",
+        }),
+      }
+    );
     const data = await response.json();
     // const keyId = process.env.REACT_APP_RAZORPAY_KEY_ID;
     const options = {
