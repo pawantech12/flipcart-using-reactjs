@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .progress-wrapper {
+    position: relative;
+    padding: 1rem 1rem; /* Adjust padding if necessary */
+  }
+
+  .progress-line {
+    position: absolute;
+    top: 58%;
+    left: calc(12.5% + 16px); 
+    right: calc(12.5% + 16px);
+    z-index: -5;
+    height: 2px;
+    background-color: #E5E7EB; 
+    transform: translateY(-50%);
+  }
+
+  .progress-line.dark {
+    background-color: #374151; 
+  }
