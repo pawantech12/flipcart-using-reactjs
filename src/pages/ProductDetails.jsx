@@ -72,6 +72,7 @@ export const ProductDetails = () => {
   const productDesc = product.desc
     .split(". ")
     .map((item) => (item.endsWith(".") ? item : item + "."));
+  const specification = product.specification;
   const handleBuyNow = () => {
     navigate("/checkout", { state: { product } });
   };
@@ -200,49 +201,12 @@ export const ProductDetails = () => {
         <div className="mt-1 bg-white py-4 px-4">
           <table>
             <tbody>
-              <tr>
-                <th className="text-left">Brand</th>
-                <td className="ps-8 text-sm">Wonderchef</td>
-              </tr>
-              <tr>
-                <th className="text-left">Colour</th>
-                <td className="ps-8 text-sm">Black & Crimson</td>
-              </tr>
-              <tr>
-                <th className="text-left">Product Dimensions</th>
-                <td className="ps-8 text-sm">
-                  8.9D x 20.1W x 11.4H Centimeters
-                </td>
-              </tr>
-              <tr>
-                <th className="text-left">Blade</th>
-                <td className="ps-8 text-sm">Stainless Steel</td>
-              </tr>
-              <tr>
-                <th className="text-left">Special Feature</th>
-                <td className="ps-8 text-sm">
-                  Adjustable Speed Control,Overload pro Duty,Sturdy,Rust
-                  Resistant,Durable.
-                </td>
-              </tr>
-              <tr>
-                <th className="text-left">Capacity</th>
-                <td className="ps-8 text-sm">1.5 litres</td>
-              </tr>
-              <tr>
-                <th className="text-left">Controls Type</th>
-                <td className="ps-8 text-sm">Knob Control</td>
-              </tr>
-              <tr>
-                <th className="text-left">Item Weight</th>
-                <td className="ps-8 text-sm">3000 Grams</td>
-              </tr>
-              <tr>
-                <th className="text-left">Model Name</th>
-                <td className="ps-8 text-sm">
-                  Wonderchef Platinum 750W Mixer Grind
-                </td>
-              </tr>
+              {Object.keys(specification).map((key, index) => (
+                <tr key={index}>
+                  <th className="text-left">{key}</th>
+                  <td className="ps-8 text-sm">{specification[key]}</td>
+                </tr>
+              ))}
             </tbody>
             <Link className="flex items-center gap-1 text-green-900 text-sm">
               {" "}
@@ -368,8 +332,21 @@ export const ProductDetails = () => {
           <div className="mt-8">
             <ul className="flex flex-col gap-4">
               <li>
-                <div className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-5">
-                  <div className="flex gap-2">
+                <div className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-5 overflow-hidden">
+                  <div className="flex gap-3 overflow-x-auto no-scrollbar">
+                    {product &&
+                      product.images.map((img, index) => {
+                        return (
+                          <img
+                            src={img}
+                            alt=""
+                            key={index}
+                            className="w-24 object-contain rounded-md"
+                          />
+                        );
+                      })}
+                  </div>
+                  <div className="flex gap-2 mt-2">
                     <figure className="w-14">
                       <img
                         src={reviewprofile}
@@ -406,7 +383,20 @@ export const ProductDetails = () => {
                 </div>
               </li>
               <li>
-                <div className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-5">
+                <div className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-5 overflow-hidden">
+                  <div className="flex gap-3 overflow-x-auto no-scrollbar">
+                    {product &&
+                      product.images.map((img, index) => {
+                        return (
+                          <img
+                            src={img}
+                            alt=""
+                            key={index}
+                            className="w-24 object-contain rounded-md"
+                          />
+                        );
+                      })}
+                  </div>
                   <div className="flex gap-2">
                     <figure className="w-14">
                       <img
