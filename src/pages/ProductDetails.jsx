@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 // import productData from "../data/ProductData";
 import plus from "../img/plus.png";
 import replacement from "../img/replacement.png";
+import reviewprofile from "../img/review-profile.avif";
+import reviewprofile2 from "../img/review-profile2.avif";
 import material from "../img/material.svg";
 import voltage from "../img/voltage.svg";
 import wattage from "../img/wattage.svg";
@@ -9,7 +11,7 @@ import speed from "../img/speed.svg";
 import noncod from "../img/non-cod.png";
 import paylater from "../img/paylater.jpeg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaChevronUp } from "react-icons/fa";
+import { FaChevronUp, FaStar } from "react-icons/fa";
 export const ProductDetails = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { state: product } = useLocation();
@@ -67,7 +69,9 @@ export const ProductDetails = () => {
   const handleAddToCart = () => {
     navigate("/checkout", { state: { product } });
   };
-
+  const productDesc = product.desc
+    .split(". ")
+    .map((item) => (item.endsWith(".") ? item : item + "."));
   const handleBuyNow = () => {
     navigate("/checkout", { state: { product } });
   };
@@ -288,25 +292,160 @@ export const ProductDetails = () => {
         <div className="mt-1 py-5 px-3 bg-white">
           <h4 className="font-semibold">About this item</h4>
           <ul className="mt-3 text-sm list-disc ps-8">
-            <li>
-              You can complete all your computing requirements or have an
-              entertaining gaming session with the Samsung 68.58 cm (27)
-              LF27T350FHW Flat Monitor.
-            </li>
-            <li>
-              Featuring a three-sided borderless display, this monitor boasts a
-              minimalist design for optimal concentration.
-            </li>
-            <li>
-              Additionally, it gives your workstation a modern appearance.
-              Besides, as this monitor ensures that multiple screens properly
-              align, having numerous monitors allows for distraction-free work.
-            </li>
-            <li>
-              Moreover, this monitor's IPS display enables a genuinely
-              technicolour viewing experience from every angle.
-            </li>
+            {productDesc.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
           </ul>
+        </div>
+        <div className="bg-white py-4 px-4 mt-3">
+          <h4 className="font-semibold text-lg">Customer Reviews</h4>
+          <div className="mt-2">
+            <ul className="flex items-center gap-1">
+              <li>
+                <FaStar className="text-yellow-500 w-54 h-4" />
+              </li>
+              <li>
+                <FaStar className="text-yellow-500 w-4 h-4" />
+              </li>
+              <li>
+                <FaStar className="text-yellow-500 w-4 h-4" />
+              </li>
+              <li>
+                <FaStar className="text-yellow-500 w-4 h-4" />
+              </li>
+              <li>
+                <FaStar className="text-neutral-300 w-4 h-4" />
+              </li>
+            </ul>
+          </div>
+          <div className="mt-3">
+            <ul>
+              <li className="flex  items-center gap-3">
+                <span>5</span>
+                <FaStar className="text-yellow-500 w-5  h-5" />
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-yellow-500 h-3 rounded-full w-1/4"></div>
+                </div>
+              </li>
+              <li className="flex  items-center gap-3">
+                <span>4</span>
+                <FaStar className="text-yellow-500 w-5  h-5" />
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-yellow-500 h-3 rounded-full w-2/5"></div>
+                </div>
+              </li>
+              <li className="flex  items-center gap-3">
+                <span>3</span>
+                <FaStar className="text-yellow-500 w-5  h-5" />
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-yellow-500 h-3 rounded-full w-1/3"></div>
+                </div>
+              </li>
+              <li className="flex  items-center gap-3">
+                <span>2</span>
+                <FaStar className="text-yellow-500 w-5  h-5" />
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-yellow-500 h-3 rounded-full w-1/6"></div>
+                </div>
+              </li>
+              <li className="flex  items-center gap-3">
+                <span>1</span>
+                <FaStar className="text-yellow-500 w-5  h-5" />
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-yellow-500 h-3 rounded-full w-1/12"></div>
+                </div>
+              </li>
+            </ul>
+            <h4 className="font-medium mt-4">Share your thoughts</h4>
+            <p className="text-zinc-500 text-sm mt-2">
+              If you’ve used this product, share your thoughts with other
+              customers
+            </p>
+            <button className="border border-gray-200 rounded-md w-full h-11 font-medium mt-3">
+              Write a review
+            </button>
+          </div>
+          <div className="mt-8">
+            <ul className="flex flex-col gap-4">
+              <li>
+                <div className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-5">
+                  <div className="flex gap-2">
+                    <figure className="w-14">
+                      <img
+                        src={reviewprofile}
+                        alt=""
+                        className="rounded-full"
+                      />
+                    </figure>
+                    <div>
+                      <h5 className="font-semibold">Emily Selman</h5>
+                      <ul className="flex items-center gap-1">
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-neutral-300 w-4 h-4" />
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <p className="text-zinc-500 italic">
+                    This is the bag of my dreams. I took it on my last vacation
+                    and was able to fit an absurd amount of snacks for the many
+                    long and hungry flights.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div className="flex flex-col gap-2 border border-gray-200 rounded-md px-4 py-5">
+                  <div className="flex gap-2">
+                    <figure className="w-14">
+                      <img
+                        src={reviewprofile2}
+                        alt=""
+                        className="rounded-full"
+                      />
+                    </figure>
+                    <div>
+                      <h5 className="font-semibold">Hector Gibbons</h5>
+                      <ul className="flex items-center gap-1">
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-yellow-500 w-4 h-4" />
+                        </li>
+                        <li>
+                          <FaStar className="text-neutral-300 w-4 h-4" />
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <p className="text-zinc-500 italic">
+                    Before getting the Ruck Snack, I struggled my whole life
+                    with pulverized snacks, endless crumbs, and other
+                    heartbreaking snack catastrophes. Now, I can stow my snacks
+                    with confidence and style!
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="fixed bottom-0 left-0 right-0 bg-white flex font-medium border border-gray-200">
           <button className="w-full bg-white py-3" onClick={handleAddToCart}>
