@@ -14,7 +14,7 @@ import gpay from "../img/gpay.svg";
 import bhimupi from "../img/bhimupi.svg";
 import safetylabelbadge from "../img/safety-label-badge.jpg";
 import states from "../data/state";
-import logo from "../img/flipcart-logo.png";
+import logo from "../img/logo.png";
 
 const loadScript = (src) => {
   return new Promise((resolve) => {

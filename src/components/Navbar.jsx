@@ -1,6 +1,6 @@
 import React from "react";
 import { MdOutlineMenu } from "react-icons/md";
-import logo from "../img/flipcart-logo.png";
+import logo from "../img/logo.png";
 import { FaShoppingCart } from "react-icons/fa";
 export const Navbar = () => {
   return (
@@ -9,7 +9,7 @@ export const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <MdOutlineMenu className="text-white w-5 h-5" />
-            <img src={logo} alt="" className="w-20" />
+            <img src={logo} alt="" className="w-32" />
           </div>
           <div className="relative">
             <button className="text-white">

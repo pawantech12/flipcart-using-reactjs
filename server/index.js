@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 const corsOptions = {
-  origin: "https://flipcart-using-reactjs-pawantech12s-projects.vercel.app",
+  origin: "http://flip4sale",
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
