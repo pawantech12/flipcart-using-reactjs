@@ -4,9 +4,16 @@ const Razorpay = require("razorpay");
 const cors = require("cors");
 const app = express();
 const port = 3000;
-
+const allowedOrigins = ["http://localhost:5173", "http://192.168.0.105:5173"];
 const corsOptions = {
-  origin: "http://flip4sale",
+  origin: function (origin, callback) {
+    // Check if the origin is in the allowedOrigins array or if it's undefined (non-CORS request)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
