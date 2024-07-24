@@ -7,7 +7,8 @@ const port = 3000;
 const allowedOrigins = [
   "http://localhost:5173",
   "http://192.168.0.105:5173",
-  "http://flip4sale.xy",
+  "http://flip4sale.xyz",
+  "https://flip4sale.xyz",
 ];
 const corsOptions = {
   origin: function (origin, callback) {

@@ -170,9 +170,11 @@ export const ProductDetails = () => {
           <div className="flex gap-4 items-center">
             <span className="text-green-700 font-bold text-xl">96% Off</span>
             <span className="text-zinc-500 font-semibold text-xl line-through">
-              &#x20b9; 7,599
+              &#x20b9; {product.price + 1000}
             </span>
-            <span className="font-semibold text-xl">&#x20b9; 299.00</span>
+            <span className="font-semibold text-xl">
+              &#x20b9; {product.price}
+            </span>
           </div>
         </div>
         <div className="bg-white mt-[2px] py-2 rounded-md">

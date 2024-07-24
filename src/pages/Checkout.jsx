@@ -15,6 +15,7 @@ import bhimupi from "../img/bhimupi.svg";
 import safetylabelbadge from "../img/safety-label-badge.jpg";
 import states from "../data/state";
 import logo from "../img/logo.png";
+import Loader from "../components/Loader";
 
 const loadScript = (src) => {
   return new Promise((resolve) => {
@@ -38,15 +39,20 @@ export const Checkout = () => {
   } = useForm({ mode: "onChange" });
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState([]);
+  const [loading, setLoading] = useState(false); // Loader state
 
   const onSubmit = (data) => {
     setFormData([...formData, data]);
     nextStep();
   };
-  console.log(formData);
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
+  useEffect(() => {
+    if (step <= 3) {
+      setLoading(false); // Ensure loader is hidden when returning to payment step
+    }
+  }, [step]);
   const stepFormTitle = (step) => {
     if (step === 1) {
       return "Add Address";
@@ -59,7 +65,6 @@ export const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const product = location.state?.product;
-  console.log("current step", step);
   const [timeRemaining, setTimeRemaining] = useState(12 * 60); // 12 minutes in seconds
   const [isRunning, setIsRunning] = useState(true);
 
@@ -73,73 +78,94 @@ export const Checkout = () => {
 
     return () => clearInterval(interval);
   }, [isRunning]);
+
   if (timeRemaining == 0) {
     setTimeRemaining(12 * 60);
   }
+
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, "0")} min ${remainingSeconds
       .toString()
-      .padStart(2, "0")}sec`;
+      .padStart(2, "0")} sec`;
   };
 
   // payment integration
   const handlePayment = async () => {
+    setLoading(true); // Show loader
+
     // Load Razorpay script
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
+    console.log("step", step);
 
     if (!res) {
       alert("Razorpay SDK failed to load. Are you online?");
+      setLoading(false); // Hide loader
       return;
     }
+    try {
+      const response = await fetch(
+        "https://flip4sale-backend.onrender.com/payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: product.price + "00",
+            currency: "INR",
+          }),
+        }
+      );
 
-    const response = await fetch(
-      "https://flipcart-using-reactjs.onrender.com/payment",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: 29900,
-          currency: "INR",
-        }),
+      if (!response) {
+        console.log("Something went wrong");
+        setLoading(false); // Hide loader
+        return;
       }
-    );
-    const data = await response.json();
-    // const keyId = process.env.REACT_APP_RAZORPAY_KEY_ID;
-    const options = {
-      key: import.meta.env.VITE_APP_RAZORPAY_KEY_ID,
-      amount: data.amount,
-      currency: data.currency,
-      name: "Budget Store",
-      description: "Test payment",
-      image: logo,
 
-      order_id: data.id,
-      handler: function (response) {
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
-      },
-      prefill: {
+      const data = await response.json();
+      console.log(data.errors);
+
+      const options = {
+        key: "rzp_live_Rb6fY98pysiFoI",
+        amount: data.amount,
+        currency: data.currency,
         name: "Budget Store",
-        email: "your.email@example.com",
-        contact: "9999999999",
-      },
-      notes: {
-        address: "Your Address",
-      },
-      theme: {
-        color: "#F37254",
-      },
-    };
+        description: "Test payment",
+        image: logo,
+        order_id: data.id,
+        handler: function (response) {
+          alert(response.razorpay_payment_id);
+          alert(response.razorpay_order_id);
+          alert(response.razorpay_signature);
+          setLoading(false); // Hide loader
+        },
+        prefill: {
+          name: "Budget Store",
+          email: "your.email@example.com",
+          contact: "9999999999",
+        },
+        notes: {
+          address: "Your Address",
+        },
+        theme: {
+          color: "#F37254",
+        },
+      };
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+      rzp.on("payment.failed", () => {
+        setLoading(false); // Hide loader if payment fails
+      });
+    } catch (error) {
+      console.error("Payment error:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -356,9 +382,11 @@ export const Checkout = () => {
               <div className="flex gap-4 items-center mt-4">
                 <span className="text-green-700 ">96% Off</span>
                 <span className="text-zinc-500 text-lg line-through">
-                  &#x20b9; 7,599
+                  &#x20b9; {product.price + 1000}
                 </span>
-                <span className="font-semibold text-lg">&#x20b9; 299.00</span>
+                <span className="font-semibold text-lg">
+                  &#x20b9; {product.price}
+                </span>
               </div>
             </div>
           </div>
@@ -397,9 +425,9 @@ export const Checkout = () => {
           <div className="fixed bottom-0 left-0 right-0 h-16 bg-white flex p-3 justify-between font-medium border border-gray-200">
             <div className="flex flex-col ">
               <span className="text-zinc-500 text-xs line-through">
-                &#x20b9; 7,599
+                &#x20b9; {product.price + 1000}
               </span>
-              <span className=" text-base">&#x20b9; 299.00</span>
+              <span className=" text-base">&#x20b9; {product.price}</span>
             </div>
             <div className="">
               <button
@@ -413,93 +441,98 @@ export const Checkout = () => {
         </div>
       )}
 
-      {step === 3 && (
-        <div>
-          <div className=" border-t-2 border-gray-100 py-3">
-            <figure>
-              <img src={upi} alt="" />
-            </figure>
-          </div>
-          <p className="font-semibold text-center border-t-2 border-gray-100 py-2">
-            Offer ends in{" "}
-            <span className="text-orange-500">{formatTime(timeRemaining)}</span>
-          </p>
-          <div className="px-2">
-            <figure>
-              <img src={phonepediscount} alt="" />
-            </figure>
-            <figure>
-              <img src={paytmdiscount} alt="" />
-            </figure>
-          </div>
-          <div className="mt-3 px-2">
-            <ul className="flex flex-col gap-3 items-center">
-              <li className="w-full">
-                <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
-                  <img src={phonepe} alt="" className="w-7 h-7" />
-                  <span className="text-lg">Phonepe</span>
-                </button>
-              </li>
-              <li className="w-full">
-                <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
-                  <img src={paytm} alt="" className="w-7 h-7" />
-                  <span className="text-lg">Paytm</span>
-                </button>
-              </li>
-              <li className="w-full">
-                <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
-                  <img src={gpay} alt="" className="w-7 h-7" />
-                  <span className="text-lg">Gpay</span>
-                </button>
-              </li>
-              <li className="w-full">
-                <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
-                  <img src={bhimupi} alt="" className="w-7 h-7" />
-                  <span className="text-lg">All Other UPI</span>
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div className="px-4 py-6">
-            <h4 className="font-medium text-lg">Price Details</h4>
-            <div className="text-sm mt-3 flex flex-col">
-              <div className="flex items-center justify-between py-2">
-                <span>Price(1 item)</span>
-                <span>&#x20b9; 7,599</span>
-              </div>
-
-              <div className="flex items-center justify-between py-2">
-                <span>Delivery Charges</span>
-                <span className="text-green-600">FREE Delivery</span>
-              </div>
-              <div className="flex items-center justify-between py-3 border-t-2 border-dashed border-gray-100 mt-1">
-                <span>Amount Payable</span>
-                <span>&#x20b9; 299</span>
-              </div>
-            </div>
-          </div>
-
+      {step === 3 &&
+        (loading ? (
+          <Loader />
+        ) : (
           <div>
-            <img src={safetylabelbadge} alt="" />
-          </div>
-          <div className="fixed bottom-0 left-0 right-0 h-16 bg-white flex p-3 justify-between font-medium border border-gray-200">
-            <div className="flex flex-col ">
-              <span className="text-zinc-500 text-xs line-through">
-                &#x20b9; 7,599
+            <div className=" border-t-2 border-gray-100 py-3">
+              <figure>
+                <img src={upi} alt="" />
+              </figure>
+            </div>
+            <p className="font-semibold text-center border-t-2 border-gray-100 py-2">
+              Offer ends in{" "}
+              <span className="text-orange-500">
+                {formatTime(timeRemaining)}
               </span>
-              <span className=" text-base">&#x20b9; 299.00</span>
+            </p>
+            <div className="px-2">
+              <figure>
+                <img src={phonepediscount} alt="" />
+              </figure>
+              <figure>
+                <img src={paytmdiscount} alt="" />
+              </figure>
             </div>
-            <div className="">
-              <button
-                className="bg-[#fec200] h-full text-sm px-10 rounded-md"
-                onClick={handlePayment}
-              >
-                Continue
-              </button>
+            <div className="mt-3 px-2">
+              <ul className="flex flex-col gap-3 items-center">
+                <li className="w-full">
+                  <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
+                    <img src={phonepe} alt="" className="w-7 h-7" />
+                    <span className="text-lg">Phonepe</span>
+                  </button>
+                </li>
+                <li className="w-full">
+                  <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
+                    <img src={paytm} alt="" className="w-7 h-7" />
+                    <span className="text-lg">Paytm</span>
+                  </button>
+                </li>
+                <li className="w-full">
+                  <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
+                    <img src={gpay} alt="" className="w-7 h-7" />
+                    <span className="text-lg">Gpay</span>
+                  </button>
+                </li>
+                <li className="w-full">
+                  <button className="flex items-center px-16 border gap-3 h-[70px] hover:border-blue-500 transition-all ease-in-out duration-200 rounded-lg w-full border-gray-200">
+                    <img src={bhimupi} alt="" className="w-7 h-7" />
+                    <span className="text-lg">All Other UPI</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div className="px-4 py-6">
+              <h4 className="font-medium text-lg">Price Details</h4>
+              <div className="text-sm mt-3 flex flex-col">
+                <div className="flex items-center justify-between py-2">
+                  <span>Price(1 item)</span>
+                  <span>&#x20b9; 7,599</span>
+                </div>
+
+                <div className="flex items-center justify-between py-2">
+                  <span>Delivery Charges</span>
+                  <span className="text-green-600">FREE Delivery</span>
+                </div>
+                <div className="flex items-center justify-between py-3 border-t-2 border-dashed border-gray-100 mt-1">
+                  <span>Amount Payable</span>
+                  <span>&#x20b9; 299</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <img src={safetylabelbadge} alt="" />
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 h-16 bg-white flex p-3 justify-between font-medium border border-gray-200">
+              <div className="flex flex-col ">
+                <span className="text-zinc-500 text-xs line-through">
+                  &#x20b9; {product.price + 1000}
+                </span>
+                <span className=" text-base">&#x20b9; {product.price}</span>
+              </div>
+              <div className="">
+                <button
+                  className="bg-[#fec200] h-full text-sm px-10 rounded-md"
+                  onClick={handlePayment}
+                >
+                  Continue
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ))}
     </>
   );
 };

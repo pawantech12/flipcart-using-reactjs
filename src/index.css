@@ -30,3 +30,20 @@
   .progress-line.dark {
     background-color: #374151; 
   }
+
+    .loader {
+      border-top-color: rgb(228, 227, 227);
+      border-left-color: rgb(228, 227, 227);
+      border-right-color: rgb(228, 227, 227);
+      animation: spin 1s linear infinite;
+    }
+  
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+  
+      100% {
+        transform: rotate(360deg);
+      }
+    }

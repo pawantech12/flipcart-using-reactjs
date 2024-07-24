@@ -248,11 +248,13 @@ export const Home = () => {
                     <div className="text-[15px] flex items-center gap-2">
                       <span className="text-green-700">96% Off</span>
                       <span className="text-zinc-400 line-through">
-                        &#x20b9; 7,599
+                        &#x20b9; {item.price + 2000}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold">&#x20b9; 299.00</span>
+                      <span className="font-semibold">
+                        &#x20b9; {item.price}
+                      </span>
                       <img src={assured} alt="" className="w-[70px]" />
                     </div>
                     <p className="text-center text-xs">
